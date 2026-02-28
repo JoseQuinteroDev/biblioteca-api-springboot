@@ -403,10 +403,4 @@ Proyecto de portfolio (Junior Java Backend Developer)
 
 GitHub: [@JoseQuinteroDev](https://github.com/JoseQuinteroDev)
 
----
 
-## 📄 Licencia
-
-Proyecto compartido con fines de aprendizaje y portfolio profesional.
-
-(Si en el futuro lo deseas, se puede añadir una licencia como MIT.)
