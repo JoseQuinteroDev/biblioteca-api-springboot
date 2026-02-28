@@ -13,6 +13,7 @@ public class LibroResponse {
     private String autorNombre; // ejemplo: "Miguel de Cervantes"
 
     public LibroResponse(Long id, String titulo, String isbn, Long autorId, String autorNombre) {
+        this.id = id;
         this.titulo = titulo;
         this.isbn = isbn;
         this.autorId = autorId;
