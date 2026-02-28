@@ -79,7 +79,7 @@ biblioteca-api-springboot/
 │   │           └── V1__create_tables.sql
 ├── postman/
 │   ├── BibliotecaAPI.postman_collection.json
-│   └── Local.postman_environment.json   (opcional)
+│   └── Local.postman_environment.json   
 ├── docker-compose.yml
 ├── pom.xml
 ├── README.md
