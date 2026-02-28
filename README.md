@@ -1,95 +1,80 @@
-# Biblioteca API Spring Boot
+# Biblioteca API (Spring Boot) 📚
 
-## Project Description
-This is a robust and scalable RESTful API for managing a library system using Spring Boot. The project facilitates library operations, allowing users to manage books, members, and borrowing transactions seamlessly.
+REST API developed with **Spring Boot** to manage a simple library domain with **Authors** and **Books**.
 
-## Features
-- User authentication and authorization
-- CRUD operations for books and members
-- Borrowing and returning system
-- Search functionality for books
-- Admin dashboard for monitoring and managing the library
+This project is part of my backend portfolio as a **Junior Java Backend Developer**, focused on clean layered architecture, DTOs, validation, database migrations, and reproducible local setup using Docker.
 
-## Tech Stack
-- **Backend:** Spring Boot
-- **Database:** PostgreSQL
-- **Documentation:** Swagger
-- **Containerization:** Docker
-- **Build Tool:** Maven
+---
 
-## Installation Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/JoseQuinteroDev/biblioteca-api-springboot.git
-   cd biblioteca-api-springboot
-   ```
-2. Ensure you have Java 11+ and Maven installed.
-3. Configure application properties for database connection in `src/main/resources/application.properties`.
-4. Build the project:
-   ```bash
-   mvn clean install
-   ```
+## ✨ Features
 
-## Usage
-To run the application locally:
-```bash
-mvn spring-boot:run
-```
+### Authors
+- Create author
+- List authors
+- Get author by ID
+- Delete author
 
-## API Endpoints
-| Method | Endpoint                | Description                        |
-|--------|-------------------------|------------------------------------|
-| GET    | /api/books              | Retrieve all books                 |
-| POST   | /api/books              | Add a new book                     |
-| PUT    | /api/books/{id}        | Update book details                |
-| DELETE | /api/books/{id}        | Delete a book                      |
-| GET    | /api/members            | Retrieve all members               |
-| POST   | /api/members            | Add a new member                   |
-| PUT    | /api/members/{id}      | Update member details              |
-| DELETE | /api/members/{id}      | Delete a member                    |
+### Books
+- Create book
+- List books
+- Get book by ID
+- Delete book
 
-## Docker Setup
-1. Build the Docker image:
-   ```bash
-   docker build -t biblioteca-api .
-   ```
-2. Run the Docker container:
-   ```bash
-   docker run -p 8080:8080 biblioteca-api
-   ```
+### Technical features
+- Layered architecture (`controller`, `service`, `repository`)
+- DTOs for request/response separation
+- Input validation with Jakarta Validation
+- Error handling using proper HTTP status codes (`404`, `409`)
+- JPA/Hibernate with entity relationships (`ManyToOne`)
+- Database schema versioning with **Flyway**
+- MySQL database running in **Docker**
 
-## Database Migrations
-Database migrations are handled using Flyway. To apply migrations, ensure the database connection is properly set in the `application.properties` and run the application.
+---
 
-## Project Structure
-```
+## 🛠️ Tech Stack
+
+- **Java**
+- **Spring Boot**
+- **Spring Web**
+- **Spring Data JPA / Hibernate**
+- **Jakarta Validation**
+- **MySQL 8** (Docker)
+- **Flyway** (database migrations)
+- **Maven**
+
+---
+
+## 🧱 Project Architecture
+
+This project follows a layered backend structure:
+
+- **Controller** → Exposes REST endpoints
+- **Service** → Business logic and validations
+- **Repository** → Data access with Spring Data JPA
+- **DTOs** → Request/response payloads
+- **Entities** → JPA domain model (`Autor`, `Libro`)
+
+---
+
+## 🗂️ Project Structure
+
+```text
+biblioteca-api-springboot/
 ├── src/
 │   ├── main/
-│   │   ├── java/
-│   │   │   └── com/example/biblioteca/
+│   │   ├── java/com/josequintero/biblioteca/
+│   │   │   ├── controller/
+│   │   │   ├── dto/
+│   │   │   │   ├── request/
+│   │   │   │   └── response/
+│   │   │   ├── model/
+│   │   │   ├── repository/
+│   │   │   ├── service/
+│   │   │   └── BibliotecaApplication.java
 │   │   └── resources/
 │   │       ├── application.properties
-│   └── test/
+│   │       └── db/migration/
+│   │           └── V1__create_tables.sql
+├── docker-compose.yml
 ├── pom.xml
-├── Dockerfile
-├── README.md
-```
-
-## Contributing Guidelines
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature/MyFeature
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m 'Add some feature'
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/MyFeature
-   ```
-5. Open a Pull Request.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+└── README.md
