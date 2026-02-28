@@ -1,12 +1,13 @@
 # Biblioteca API (Spring Boot) 📚
 
-API REST desarrollada con **Spring Boot** para gestionar un dominio sencillo de biblioteca con **Autores** y **Libros**.
+Este es uno de mis proyectos de portfolio como **Junior Java Backend Developer**.
 
-Este proyecto forma parte de mi portfolio como **Junior Java Backend Developer**, con foco en arquitectura por capas, DTOs, validación, migraciones de base de datos y entorno reproducible en local con Docker.
+He desarrollado una **API REST con Spring Boot** para gestionar una biblioteca sencilla con dos entidades principales: **Autores** y **Libros**.  
+Mi objetivo con este proyecto ha sido practicar una base backend sólida: **arquitectura por capas**, **DTOs**, **validación**, **JPA/Hibernate**, **migraciones con Flyway**, **MySQL en Docker** y **pruebas manuales con Postman**.
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Qué hace la API
 
 ### Autores
 - Crear autor
@@ -20,16 +21,6 @@ Este proyecto forma parte de mi portfolio como **Junior Java Backend Developer**
 - Obtener libro por ID
 - Eliminar libro
 
-### Características técnicas
-- Arquitectura por capas (`controller`, `service`, `repository`)
-- DTOs para separar request/response
-- Validación de entrada con Jakarta Validation
-- Manejo de errores con códigos HTTP (`404`, `409`)
-- Relación JPA/Hibernate (`ManyToOne`) entre `Libro` y `Autor`
-- Versionado de esquema con **Flyway**
-- Base de datos MySQL ejecutándose en **Docker**
-- Colección de pruebas con **Postman** (endpoints de autores y libros)
-
 ---
 
 ## 🛠️ Stack tecnológico
@@ -39,22 +30,26 @@ Este proyecto forma parte de mi portfolio como **Junior Java Backend Developer**
 - **Spring Web**
 - **Spring Data JPA / Hibernate**
 - **Jakarta Validation**
-- **MySQL 8** (Docker)
+- **MySQL 8** (en Docker)
 - **Flyway** (migraciones)
-- **Maven**
-- **Postman** (testing manual de endpoints)
+- **Postman** (pruebas manuales de endpoints)
+- **Maven** (gestión de dependencias con `pom.xml`)
+
+> Nota: actualmente yo ejecuto este proyecto desde **IntelliJ** (no desde terminal con `mvn`).
 
 ---
 
-## 🧱 Arquitectura del proyecto
+## 🧱 Arquitectura del proyecto (por capas)
 
-El proyecto sigue una estructura backend por capas:
+He organizado el proyecto con una estructura backend clásica por capas:
 
 - **Controller** → expone endpoints REST
 - **Service** → lógica de negocio y validaciones
 - **Repository** → acceso a datos con Spring Data JPA
-- **DTOs** → payloads de entrada/salida
+- **DTOs** → separación entre request/response y entidades
 - **Entities** → modelo JPA (`Autor`, `Libro`)
+
+Esto me ha permitido practicar una forma de trabajo más cercana a proyectos reales y evitar acoplar directamente el modelo de base de datos con la API pública.
 
 ---
 
@@ -78,8 +73,8 @@ biblioteca-api-springboot/
 │   │       └── db/migration/
 │   │           └── V1__create_tables.sql
 ├── postman/
-│   ├── BibliotecaAPI.postman_collection.json
-│   └── Local.postman_environment.json   
+│   ├── Biblioteca API.postman_collection.json
+│   └── Local.postman_environment.json
 ├── docker-compose.yml
 ├── pom.xml
 ├── README.md
@@ -90,17 +85,17 @@ biblioteca-api-springboot/
 
 ## ✅ Requisitos previos
 
-Antes de ejecutar el proyecto, asegúrate de tener instalado:
+Para probar el proyecto en local recomiendo tener:
 
-- **Java 17+** (recomendado para Spring Boot 3.x)
+- **Java 17+** (Spring Boot 3.x)  
+  > En mi caso lo he probado con una versión superior sin problema.
 - **Docker Desktop**
-- **Git** (opcional, para clonar)
-- **Maven** o usar el **Maven Wrapper** (`mvnw` / `mvnw.cmd`)
-- **Postman** (opcional, para probar endpoints manualmente)
+- **IntelliJ IDEA** (recomendado, que es como lo estoy ejecutando yo)
+- **Postman** (opcional, pero recomendable para probar la API)
 
 ---
 
-## 🚀 Puesta en marcha (local)
+## 🚀 Cómo lo ejecuto en local (paso a paso)
 
 ### 1) Clonar el repositorio
 
@@ -115,24 +110,22 @@ cd biblioteca-api-springboot
 docker compose up -d
 ```
 
-Esto levanta un contenedor MySQL con la configuración del proyecto:
+Esto levanta un contenedor MySQL con esta configuración:
+
+- **Imagen:** `mysql:8.0`
+- **Contenedor:** `biblioteca-mysql`
 - **Base de datos:** `biblioteca_db`
 - **Puerto host:** `3307`
 - **Puerto contenedor:** `3306`
 
-### 3) Ejecutar la aplicación Spring Boot
+> Uso `3307` en el host para evitar conflicto si ya hay otro MySQL local usando `3306`.
 
-#### En Windows (Maven Wrapper)
-```bash
-mvnw.cmd spring-boot:run
-```
+### 3) Ejecutar la API desde IntelliJ
+Abro el proyecto y ejecuto la clase:
 
-#### En Linux/macOS (Maven Wrapper)
-```bash
-./mvnw spring-boot:run
-```
+- `BibliotecaApplication`
 
-> También puedes ejecutarlo desde IntelliJ usando la clase `BibliotecaApplication`.
+(Usando el botón **Run** ▶️ de IntelliJ)
 
 ### 4) URL base de la API
 
@@ -142,53 +135,48 @@ http://localhost:8080
 
 ---
 
-## 🐳 Base de datos con Docker
+## 🐳 Base de datos (Docker + MySQL)
 
-El proyecto incluye un `docker-compose.yml` para levantar MySQL 8.
+He dockerizado la base de datos para que el entorno sea fácil de reproducir y no dependa de una instalación local manual de MySQL.
 
-Configuración utilizada:
-- **Imagen:** `mysql:8.0`
-- **Contenedor:** `biblioteca-mysql`
-- **Base de datos:** `biblioteca_db`
-- **Mapeo de puertos:** `3307:3306`
-
-> Se usa `3307` en el host para evitar conflictos si ya existe una instalación local de MySQL en `3306`.
+El proyecto usa `docker-compose.yml` para levantar el servicio MySQL con las variables necesarias (`MYSQL_ROOT_PASSWORD`, `MYSQL_DATABASE`, etc.).
 
 ---
 
 ## 🗃️ Migraciones con Flyway
 
-El esquema de la base de datos se gestiona con **Flyway**.
+El esquema de la base de datos está versionado con **Flyway**.
 
-Las migraciones están en:
+Ruta de migraciones:
 
 ```text
 src/main/resources/db/migration/
 ```
 
 ### Migración actual
-- `V1__create_tables.sql` → crea las tablas `autores` y `libros`
+- `V1__create_tables.sql` → crea las tablas:
+  - `autores`
+  - `libros`
 
-### Nota importante
-La aplicación usa:
+### Configuración relevante
 - `spring.flyway.enabled=true`
 - `spring.jpa.hibernate.ddl-auto=validate`
 
-Esto significa que **JPA valida** que las entidades coincidan con el esquema creado por Flyway.
-
-> Recomendación: mantener alineados los tamaños/constraints entre entidades JPA y SQL de Flyway (por ejemplo, `titulo` e `isbn`).
+Esto me permite:
+- crear el esquema con Flyway
+- y después validar con JPA/Hibernate que las entidades coinciden con la estructura de BD
 
 ---
 
-## 🔌 Endpoints de la API
+## 🔌 Endpoints disponibles
 
-### Autores (`/autores`)
+## Autores (`/autores`)
 - `POST /autores` → crear autor
 - `GET /autores` → listar autores
 - `GET /autores/{id}` → obtener autor por ID
 - `DELETE /autores/{id}` → eliminar autor por ID
 
-### Libros (`/libros`)
+## Libros (`/libros`)
 - `POST /libros` → crear libro
 - `GET /libros` → listar libros
 - `GET /libros/{id}` → obtener libro por ID
@@ -196,12 +184,12 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 
 ---
 
-## 🧾 Ejemplos de uso (request / response)
+## 🧾 Ejemplos reales de uso (request / response)
 
-### ✅ Crear autor
+## ✅ Crear autor
 **POST** `/autores`
 
-#### Body (request)
+### Body (request)
 ```json
 {
   "nombre": "Gabriel García Márquez",
@@ -209,7 +197,7 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 }
 ```
 
-#### Respuesta esperada (201 Created)
+### Respuesta esperada (201 Created)
 ```json
 {
   "id": 1,
@@ -220,10 +208,10 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 
 ---
 
-### ✅ Listar autores
+## ✅ Listar autores
 **GET** `/autores`
 
-#### Respuesta esperada (200 OK)
+### Respuesta esperada (200 OK)
 ```json
 [
   {
@@ -236,10 +224,24 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 
 ---
 
-### ✅ Crear libro
+## ✅ Obtener autor por ID
+**GET** `/autores/1`
+
+### Respuesta esperada (200 OK)
+```json
+{
+  "id": 1,
+  "nombre": "Gabriel García Márquez",
+  "pais": "Colombia"
+}
+```
+
+---
+
+## ✅ Crear libro
 **POST** `/libros`
 
-#### Body (request)
+### Body (request)
 ```json
 {
   "titulo": "Cien años de soledad",
@@ -248,7 +250,7 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 }
 ```
 
-#### Respuesta esperada (201 Created)
+### Respuesta esperada (201 Created)
 ```json
 {
   "id": 1,
@@ -261,10 +263,10 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 
 ---
 
-### ✅ Listar libros
+## ✅ Listar libros
 **GET** `/libros`
 
-#### Respuesta esperada (200 OK)
+### Respuesta esperada (200 OK)
 ```json
 [
   {
@@ -279,10 +281,10 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 
 ---
 
-### ✅ Obtener libro por ID
+## ✅ Obtener libro por ID
 **GET** `/libros/1`
 
-#### Respuesta esperada (200 OK)
+### Respuesta esperada (200 OK)
 ```json
 {
   "id": 1,
@@ -295,74 +297,108 @@ Esto significa que **JPA valida** que las entidades coincidan con el esquema cre
 
 ---
 
-### ✅ Eliminar libro
+## ✅ Eliminar libro
 **DELETE** `/libros/1`
 
-#### Respuesta esperada
+### Respuesta esperada
 - `204 No Content`
 
 ---
 
-## ⚠️ Manejo de errores
+## ⚠️ Manejo de errores (HTTP)
 
-La API devuelve códigos HTTP adecuados según el caso:
+La API devuelve códigos HTTP coherentes según el caso:
 
-- **400 Bad Request** → datos inválidos (si falla validación del DTO)
-- **404 Not Found** → recurso no encontrado (autor/libro)
-- **409 Conflict** → ISBN duplicado al crear un libro
+- **400 Bad Request** → datos inválidos (si falla validación)
+- **404 Not Found** → recurso no encontrado
+- **409 Conflict** → conflicto de negocio (por ejemplo ISBN duplicado)
 
-### Casos típicos
-- Crear un libro con `isbn` ya existente → `409 Conflict`
+### Casos típicos que he contemplado
+- Crear un libro con un `isbn` ya existente → `409 Conflict`
 - Crear un libro con `autorId` inexistente → `404 Not Found`
 - Eliminar un autor/libro inexistente → `404 Not Found`
 
 ---
 
-## 🧪 Pruebas con Postman
+## 🧪 Pruebas con Postman (incluidas en el repo)
 
-Este repositorio incluye una colección de **Postman** para probar los endpoints de la API en local.
+He añadido una colección de **Postman** para poder probar la API de forma rápida en local.
 
 ### Archivos incluidos
 ```text
-postman/BibliotecaAPI.postman_collection.json
-postman/Local.postman_environment.json   (opcional)
+postman/Biblioteca API.postman_collection.json
+postman/Local.postman_environment.json
 ```
 
-### Qué contiene la colección
-- Requests para endpoints de **Autores**
-- Requests para endpoints de **Libros**
-- Bodies de ejemplo para `POST`
-- (Opcional) tests básicos de estado HTTP (`200`, `201`, `204`)
+### Qué incluye la colección
+- Requests para **Autores**
+  - crear
+  - listar
+  - obtener por ID
+  - eliminar
+- Requests para **Libros**
+  - crear
+  - listar
+  - obtener por ID
+  - eliminar
+- Bodies de ejemplo para los endpoints `POST`
+- Algunos tests básicos de respuesta (según request)
 
-### Cómo usar la colección
-1. Levantar MySQL con Docker:
-   ```bash
-   docker compose up -d
-   ```
-2. Ejecutar la aplicación Spring Boot
-3. Abrir Postman
-4. Importar la colección (`BibliotecaAPI.postman_collection.json`)
-5. (Opcional) Importar el environment local
-6. Ejecutar requests contra:
-   ```text
-   http://localhost:8080
-   ```
+---
 
-### Variables recomendadas (Postman)
-Si usas environment, puedes definir:
-- `baseUrl = http://localhost:8080`
-- `autorId` (opcional)
-- `libroId` (opcional)
+## ▶️ Cómo usar la colección de Postman (paso a paso)
 
-Ejemplos de URL con variables:
+### 1) Arrancar base de datos + API
+Primero:
+- `docker compose up -d`
+- ejecutar `BibliotecaApplication` desde IntelliJ
+
+### 2) Importar en Postman
+Importar:
+- `postman/Biblioteca API.postman_collection.json`
+- `postman/Local.postman_environment.json`
+
+### 3) Seleccionar environment `Local`
+El environment está pensado para trabajar con:
+
+```text
+baseUrl = http://localhost:8080
+```
+
+### 4) Probar endpoints
+La colección usa URLs con variable:
+
 ```text
 {{baseUrl}}/autores
-{{baseUrl}}/autores/{{autorId}}
 {{baseUrl}}/libros
-{{baseUrl}}/libros/{{libroId}}
 ```
 
-> Nota: la colección está pensada para ejecutarse en **local** (`localhost`) después de clonar y arrancar el proyecto.
+---
+
+## 💡 Flujo de prueba recomendado en Postman (el que yo suelo seguir)
+
+Para que todo funcione sin errores de IDs, recomiendo este orden:
+
+1. **POST - Crear autor**
+2. **GET - Listar autores**
+3. **GET - Obtener autor por ID**
+4. **POST - Crear libro** (usando un `autorId` existente)
+5. **GET - Listar libros**
+6. **GET - Obtener libro por ID**
+7. **DELETE - Eliminar libro**
+8. **DELETE - Eliminar autor** *(si ya no tiene libros asociados / según estado de datos)*
+
+---
+
+## ⚠️ Nota sobre variables de Postman (importante)
+
+Dependiendo de la versión de Postman, el valor de `baseUrl` puede aparecer vacío al importar el environment si se exportó como valor local.
+
+Si pasa eso, simplemente configúralo manualmente en el environment `Local`:
+
+```text
+baseUrl = http://localhost:8080
+```
 
 ---
 
@@ -370,7 +406,8 @@ Ejemplos de URL con variables:
 
 - [x] CRUD base de Autores
 - [x] CRUD base de Libros
-- [x] DTOs (request/response)
+- [x] DTOs (request / response)
+- [x] Arquitectura por capas
 - [x] Migración inicial con Flyway
 - [x] MySQL dockerizado
 - [x] Colección Postman para pruebas manuales
@@ -382,17 +419,17 @@ Ejemplos de URL con variables:
 
 ---
 
-## 🔮 Mejoras futuras (Roadmap)
+## 🔮 Roadmap / mejoras futuras
 
-Mejoras previstas para siguientes versiones:
-- Añadir `PUT` / `PATCH` para autores y libros
-- Añadir paginación y filtros
-- Añadir `@RestControllerAdvice` para manejo global de errores
-- Añadir tests unitarios e integración
-- Añadir documentación Swagger / OpenAPI
-- Añadir Spring Security + JWT (básico)
-- Dockerizar aplicación + base de datos en un mismo entorno
-- Automatizar pruebas de colección Postman con Newman (opcional)
+Quiero seguir mejorándolo con:
+- `PUT` / `PATCH` para autores y libros
+- paginación y filtros
+- `@RestControllerAdvice` para centralizar errores
+- tests unitarios e integración
+- Swagger / OpenAPI
+- Spring Security + JWT (básico)
+- Dockerizar también la aplicación (no solo MySQL)
+- Automatizar pruebas de Postman con Newman (opcional)
 
 ---
 
@@ -402,5 +439,3 @@ Mejoras previstas para siguientes versiones:
 Proyecto de portfolio (Junior Java Backend Developer)
 
 GitHub: [@JoseQuinteroDev](https://github.com/JoseQuinteroDev)
-
-
