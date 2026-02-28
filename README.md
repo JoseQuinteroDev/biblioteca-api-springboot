@@ -1,37 +1,37 @@
 # Biblioteca API (Spring Boot) 📚
 
-REST API developed with **Spring Boot** to manage a simple library domain with **Authors** and **Books**.
+API REST desarrollada con **Spring Boot** para gestionar un dominio sencillo de biblioteca con **Autores** y **Libros**.
 
-This project is part of my backend portfolio as a **Junior Java Backend Developer**, focused on clean layered architecture, DTOs, validation, database migrations, and reproducible local setup using Docker.
-
----
-
-## ✨ Features
-
-### Authors
-- Create author
-- List authors
-- Get author by ID
-- Delete author
-
-### Books
-- Create book
-- List books
-- Get book by ID
-- Delete book
-
-### Technical features
-- Layered architecture (`controller`, `service`, `repository`)
-- DTOs for request/response separation
-- Input validation with Jakarta Validation
-- Error handling using proper HTTP status codes (`404`, `409`)
-- JPA/Hibernate with entity relationships (`ManyToOne`)
-- Database schema versioning with **Flyway**
-- MySQL database running in **Docker**
+Este proyecto forma parte de mi portfolio como **Junior Java Backend Developer**, con foco en arquitectura por capas, DTOs, validación, migraciones de base de datos y entorno reproducible en local con Docker.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Funcionalidades
+
+### Autores
+- Crear autor
+- Listar autores
+- Obtener autor por ID
+- Eliminar autor
+
+### Libros
+- Crear libro
+- Listar libros
+- Obtener libro por ID
+- Eliminar libro
+
+### Características técnicas
+- Arquitectura por capas (`controller`, `service`, `repository`)
+- DTOs para separar request/response
+- Validación de entrada con Jakarta Validation
+- Manejo de errores con códigos HTTP (`404`, `409`)
+- Relación JPA/Hibernate (`ManyToOne`) entre `Libro` y `Autor`
+- Versionado de esquema con **Flyway**
+- Base de datos MySQL ejecutándose en **Docker**
+
+---
+
+## 🛠️ Stack tecnológico
 
 - **Java**
 - **Spring Boot**
@@ -39,24 +39,24 @@ This project is part of my backend portfolio as a **Junior Java Backend Develope
 - **Spring Data JPA / Hibernate**
 - **Jakarta Validation**
 - **MySQL 8** (Docker)
-- **Flyway** (database migrations)
+- **Flyway** (migraciones)
 - **Maven**
 
 ---
 
-## 🧱 Project Architecture
+## 🧱 Arquitectura del proyecto
 
-This project follows a layered backend structure:
+El proyecto sigue una estructura backend por capas:
 
-- **Controller** → Exposes REST endpoints
-- **Service** → Business logic and validations
-- **Repository** → Data access with Spring Data JPA
-- **DTOs** → Request/response payloads
-- **Entities** → JPA domain model (`Autor`, `Libro`)
+- **Controller** → expone endpoints REST
+- **Service** → lógica de negocio y validaciones
+- **Repository** → acceso a datos con Spring Data JPA
+- **DTOs** → payloads de entrada/salida
+- **Entities** → modelo JPA (`Autor`, `Libro`)
 
 ---
 
-## 🗂️ Project Structure
+## 🗂️ Estructura del proyecto
 
 ```text
 biblioteca-api-springboot/
