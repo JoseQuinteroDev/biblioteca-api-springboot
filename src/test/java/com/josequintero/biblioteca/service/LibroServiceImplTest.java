@@ -1,5 +1,6 @@
 package com.josequintero.biblioteca.service;
 
+import com.josequintero.biblioteca.dto.request.LibroCreateRequest;
 import com.josequintero.biblioteca.dto.response.LibroResponse;
 import com.josequintero.biblioteca.model.Autor;
 import com.josequintero.biblioteca.model.Libro;
@@ -79,6 +80,81 @@ class LibroServiceImplTest {
         );
 
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+
         verify(libroRepository, times(1)).findById(idInexistente);
     }
+
+    @Test
+    @DisplayName("crear() -> guarda libro y devuelve LibroResponse")
+    void crear_deberiaGuardarLibroYDevolverResponse() {
+        // Arrange
+        LibroCreateRequest request = mock(LibroCreateRequest.class);
+        when(request.getIsbn()).thenReturn("99900475");
+        when(request.getTitulo()).thenReturn("El Quijote");
+        when(request.getAutorId()).thenReturn(5L);
+
+        // Autor existente (lo devuelve autorRepository.findById)
+        Autor autor = mock(Autor.class);
+        when(autor.getId()).thenReturn(5L);
+        when(autor.getNombre()).thenReturn("Miguel de Cervantes");
+
+        // Libro guardado (lo devuelve libroRepository.save)
+        Libro guardado = mock(Libro.class);
+        when(guardado.getId()).thenReturn(1L);
+        when(guardado.getIsbn()).thenReturn("99900475");
+        when(guardado.getTitulo()).thenReturn("El Quijote");
+        when(guardado.getAutor()).thenReturn(autor); // <- importante (no encadenar sin mockear)
+
+        when(libroRepository.existsByIsbn("99900475")).thenReturn(false);
+        when(autorRepository.findById(5L)).thenReturn(Optional.of(autor));
+        when(libroRepository.save(any(Libro.class))).thenReturn(guardado);
+
+        // Act
+        LibroResponse response = libroService.crear(request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("99900475", response.getIsbn());
+        assertEquals("El Quijote", response.getTitulo());
+        assertEquals(5L, response.getAutorId());
+        assertEquals("Miguel de Cervantes", response.getAutorNombre());
+
+        // Verify (las 3 interacciones clave)
+        verify(libroRepository, times(1)).existsByIsbn("99900475");
+        verify(autorRepository, times(1)).findById(5L);
+        verify(libroRepository, times(1)).save(any(Libro.class));
+    }
+
+    @Test
+    @DisplayName("crear() -> lanza 409 si el ISBN ya existe")
+    void crear_deberiaLanzar409SiIsbnYaExiste() {
+        // Arrange
+        LibroCreateRequest request = mock(LibroCreateRequest.class);
+        when(request.getIsbn()).thenReturn("99900475");
+        when(request.getTitulo()).thenReturn("El Quijote");
+        when(request.getAutorId()).thenReturn(5L);
+
+        // Simulamos que YA existe un libro con ese ISBN
+        when(libroRepository.existsByIsbn("99900475")).thenReturn(true);
+
+        // Act + Assert
+        ResponseStatusException ex = assertThrows(
+                ResponseStatusException.class,
+                () -> libroService.crear(request)
+        );
+
+        assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
+
+        // (Opcional, pero muy útil) comprobar mensaje
+        assertTrue(ex.getReason().contains("Ya existe un libro con ISBN"));
+
+        // Verify
+        verify(libroRepository, times(1)).existsByIsbn("99900475");
+
+        // Como falla en el primer if, NO debe seguir
+        verify(autorRepository, never()).findById(anyLong());
+        verify(libroRepository, never()).save(any(Libro.class));
+    }
+
 }

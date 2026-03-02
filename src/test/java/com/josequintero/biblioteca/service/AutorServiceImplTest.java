@@ -11,8 +11,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -95,5 +98,19 @@ class AutorServiceImplTest {
         assertEquals("México", resultado.get(1).getPais());
 
         verify(autorRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("obtenerPorId() -> lanza 404 si el autor no existe")
+    void obtenerPorId_deberiaLanzar404SiNoExiste() {
+        // Arrange
+        Long idInexistente = 999L;
+        when(autorRepository.findById(idInexistente)).thenReturn(Optional.empty());
+        // Act + Assert
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> autorService.obtenerPorId(idInexistente));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+        // Verify
+        verify(autorRepository, times(1)).findById(idInexistente);
     }
 }
