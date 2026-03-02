@@ -132,8 +132,6 @@ class LibroServiceImplTest {
         // Arrange
         LibroCreateRequest request = mock(LibroCreateRequest.class);
         when(request.getIsbn()).thenReturn("99900475");
-        when(request.getTitulo()).thenReturn("El Quijote");
-        when(request.getAutorId()).thenReturn(5L);
 
         // Simulamos que YA existe un libro con ese ISBN
         when(libroRepository.existsByIsbn("99900475")).thenReturn(true);
@@ -145,8 +143,6 @@ class LibroServiceImplTest {
         );
 
         assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
-
-        // (Opcional, pero muy útil) comprobar mensaje
         assertTrue(ex.getReason().contains("Ya existe un libro con ISBN"));
 
         // Verify
