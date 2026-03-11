@@ -5,30 +5,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.11</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.3.5</version>
+		<relativePath/>
 	</parent>
 	<groupId>com.josequintero</groupId>
 	<artifactId>bibioteca-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bibioteca-api-late-version</name>
 	<description>project biblioteca api</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -53,6 +42,23 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-mysql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.6</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -117,5 +123,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

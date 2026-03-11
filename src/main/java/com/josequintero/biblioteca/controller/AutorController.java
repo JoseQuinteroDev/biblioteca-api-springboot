@@ -2,7 +2,6 @@ package com.josequintero.biblioteca.controller;
 
 import com.josequintero.biblioteca.dto.request.AutorCreateRequest;
 import com.josequintero.biblioteca.dto.response.AutorResponse;
-import com.josequintero.biblioteca.model.Autor;
 import com.josequintero.biblioteca.service.AutorService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,33 +20,25 @@ public class AutorController {
         this.autorService = autorService;
     }
 
-    // POST /autores -> crear autor
     @PostMapping
     public ResponseEntity<AutorResponse> crear(@Valid @RequestBody AutorCreateRequest request) {
         AutorResponse creado = autorService.crear(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(creado); //devolvemos 201 creado + body con autor creado
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 
-    // GET /autores -> listar autores
     @GetMapping
     public List<AutorResponse> listar() {
-        return autorService.listar(); //devolvemos siempre 200 ok + body(autores) incluso si no hay
+        return autorService.listar();
     }
 
-    // GET /autores/{id} -> obtener autor por id
     @GetMapping("/{id}")
     public AutorResponse obtenerPorId(@PathVariable Long id) {
-        AutorResponse autor = autorService.obtenerPorId(id);
-
-        return autor;
+        return autorService.obtenerPorId(id);
     }
 
-
-
-    // DELETE /autores/{id} -> eliminar autor
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         autorService.eliminar(id);
-        return ResponseEntity.noContent().build(); // 204 No Content + body vacío
+        return ResponseEntity.noContent().build();
     }
 }
