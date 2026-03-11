@@ -13,7 +13,7 @@ Con este proyecto he querido practicar una base backend sólida y realista, trab
 - Migraciones con Flyway
 - MySQL en Docker
 - Dockerización de la aplicación
-- Spring Security (HTTP Basic + roles)
+- Spring Security (stateless + JWT + roles)
 - Pruebas manuales con Postman
 - Tests unitarios con JUnit + Mockito
 
@@ -44,7 +44,7 @@ Con este proyecto he querido practicar una base backend sólida y realista, trab
 - Spring Web
 - Spring Data JPA / Hibernate
 - Jakarta Validation
-- Spring Security (HTTP Basic + autorización por roles)
+- Spring Security (stateless + JWT + autorización por roles)
 - MySQL 8 (Docker)
 - Flyway (migraciones)
 - Docker / Docker Compose (BD + app)
@@ -72,19 +72,21 @@ He organizado el proyecto con una estructura backend clásica por capas:
 
 He añadido una primera capa de seguridad usando Spring Security con:
 
-- HTTP Basic Auth
+- Autenticación stateless con JWT
+- Endpoint de login para emitir token
 - Usuarios en memoria (para aprendizaje y pruebas)
 - Roles `USER` y `ADMIN`
 - Autorización por endpoint y método HTTP
 
 ### Política de acceso actual
 
+- `POST /auth/login` → público, devuelve JWT
 - `GET /autores`, `GET /libros` → público (`permitAll`)
 - `GET /autores/{id}`, `GET /libros/{id}` → `USER` o `ADMIN`
 - `POST /autores`, `POST /libros` → solo `ADMIN`
 - `DELETE /autores/{id}`, `DELETE /libros/{id}` → solo `ADMIN`
 
-> En una siguiente fase quiero sustituir el acceso con usuarios en memoria por JWT + autenticación real con usuario persistido.
+> Siguiente paso sugerido: sustituir usuarios en memoria por usuarios persistidos en base de datos y refresh tokens.
 
 ### Usuarios de prueba actuales (entorno de desarrollo)
 
@@ -444,7 +446,7 @@ La colección permite probar fácilmente los endpoints en local con diferentes r
 - [x] Migración inicial con Flyway
 - [x] MySQL dockerizado
 - [x] Aplicación dockerizada (Dockerfile + docker-compose)
-- [x] Spring Security (HTTP Basic + roles)
+- [x] Spring Security (stateless + JWT + roles)
 - [x] Colección Postman para pruebas manuales
 - [x] Tests unitarios (JUnit + Mockito) en capa service
 - [ ] Endpoints de actualización (PUT / PATCH)
