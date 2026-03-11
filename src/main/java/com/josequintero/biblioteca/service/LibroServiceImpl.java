@@ -19,18 +19,14 @@ public class LibroServiceImpl implements LibroService {
     private final LibroRepository libroRepository;
     private final AutorRepository autorRepository;
 
-    //Inyecciones de dependencia (Spring directamente inyecta, no hace falta crearlos)
     public LibroServiceImpl(LibroRepository libroRepository, AutorRepository autorRepository) {
         this.libroRepository = libroRepository;
         this.autorRepository = autorRepository;
     }
 
-
     @Override
     @Transactional
     public LibroResponse crear(LibroCreateRequest request) {
-
-        // 1) Regla de negocio: ISBN único -> 409 CONFLICT
         if (libroRepository.existsByIsbn(request.getIsbn())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
@@ -38,18 +34,15 @@ public class LibroServiceImpl implements LibroService {
             );
         }
 
-        // 2) El autor debe existir -> 404 NOT_FOUND
         Autor autor = autorRepository.findById(request.getAutorId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Autor no encontrado con id: " + request.getAutorId()
                 ));
 
-        // 3) Crear entity y guardar
         Libro libro = new Libro(request.getTitulo(), request.getIsbn(), autor);
         Libro guardado = libroRepository.save(libro);
 
-        // 4) Mapear a response
         return new LibroResponse(
                 guardado.getId(),
                 guardado.getTitulo(),
