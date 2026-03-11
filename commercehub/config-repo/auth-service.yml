@@ -1,0 +1,6 @@
+server:
+  port: 8081
+security:
+  jwt:
+    access-expiration-minutes: 15
+    refresh-expiration-days: 7
